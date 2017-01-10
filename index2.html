@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Anna's React Google Maps (Reborn)</title>
+	<style> 
+	#map{
+		height:  100vh;
+		width:  65%;
+		float: left;
+		border-right: 3px solid black;
+	}
+	html, body{
+		height:  100%;
+		margin:  0;
+		padding:  0;
+	}
+	th, td{
+		border: 1px solid black;
+		text-align: center;
+		width: 150px;
+		width:  150px;
+		height: 25px;
+	}
+	table{
+		float: right;
+	}
+	#header{
+		text-align:  center;
+		font-size: 50px;
+		font-style: century;
+		border-bottom:  5px solid black;
+	}
+	#border{
+		margin: auto;
+		text-align: center;
+		padding: 20px;
+	}
+	.city-name{
+		text-decoration: underline;
+		cursor: pointer;
+		color: blue;
+	}
+
+
+	</style>
+</head>
+<body>
+	<div id="border">
+		<div id="header">39 Largest US Cities</div>
+	    <div id="map"></div>
+	    <div id="cities-container"></div>
+    </div>
+
+
+	<!-- Include react, reactDOM, and babel -->
+	<script src="https://fb.me/react-15.1.0.js"></script>
+	<script src="https://fb.me/react-dom-15.1.0.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl1YwZ0hzIMNacFKUQ9v4VQ9ZWpAE0Uu0"
+    ></script>
+
+	<script type="text/javascript" src="cities.js"></script>
+	<script type="text/babel" src="google-react.jsx"></script>
+
+</body>
+</html>
+
+
+
+
+
