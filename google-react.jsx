@@ -1,22 +1,48 @@
 //**************************Google/maps stuff****************************************
 //***********************************************************************************
+var mapOptions = {
+	center: {lat: 33.7490, lng: -84.3880},
+	zoom: 7
+};
+
 var map = new google.maps.Map(
 	document.getElementById('map'), 
-	{
-		center:{lat: 39.8282, lng: -98.5795},
-		zoom: 4
-	}
+	mapOptions
 );
 
 var infoWindow = new google.maps.InfoWindow({});
 
 var markers = [];
 
+var directionsService = new google.maps.DirectionsService();
+
+var directionsDisplay = new google.maps.DirectionsRenderer();
+directionsDisplay.setMap(map); 
+
+function calcRoute() {
+  var request = {
+    origin: start,
+    destination: end,
+    travelMode: 'DRIVING'
+  };
+
+  directionsService.route(request, function(result, status) {
+    if (status == 'OK') {
+    	directionsDisplay.setMap(null);
+    	directionsDisplay.setMap(map);
+      	directionsDisplay.setDirections(result);
+    }
+  });
+}
+
+var start = "Atlanta, GA"
+var end; 
+
 //a function to place a marker at a city location
 function createMarker(city){
 	var cityLL = {
-		lat:city.lat,
-		lng:city.lon
+		lat: city.lat,
+		lng: city.lon
 	}
 	var marker = new google.maps.Marker({
 		position: cityLL, 
@@ -25,7 +51,7 @@ function createMarker(city){
 		icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2%7CFE7569'
 	});
 	google.maps.event.addListener(marker, 'click', function(){
-		infoWindow.setContent(`<h2> ${city.city}</h2><div>${city.state}</div><div>{city.yearEstimate}</div>`),
+		infoWindow.setContent(`<h2> ${city.city}</h2><div>${city.state}</div><div>${city.yearEstimate}</div>`),
 		infoWindow.open(map, marker);
 	});
 	//push the just-created marker above onto the gloabl array "markers"
@@ -40,22 +66,50 @@ function createMarker(city){
 //***********************************************************************************
 var GoogleCity = React.createClass({
 	handleClickedCity: function(event){
-		console.log("someone clicked on a city");
 		google.maps.event.trigger(markers[this.props.cityObject.yearRank-1], "click")
+	},
+
+	findDirections: function(start, end){
+		start = cityObject.city
+	},
+
+	getDirections: function(){
+		end = this.props.cityObject.city; 
+		calcRoute();
+	},
+	
+	zoomToCity: function(){
+		var cityLL = new google.maps.LatLng(this.props.cityObject.lat,this.props.cityObject.lon);
+		map = new google.maps.Map(
+			document.getElementById('map'),
+				{
+					zoom: 10,
+					center: cityLL
+				}
+		)
+		var service = new google.maps.places.PlacesService(map);
+		service.nearbySearch({
+			location: cityLL, 
+			radius: 500,
+			type: ['store']
+		}, 
+		function(results, status){
+			console.log(results);
+		}
+		);
 	},
 
 	render: function(){
 		return(
 			<tr>
-				<td className="city-name" onClick={this.handleClickedCity}>${this.props.cityObject.city}</td>
+				<td className="city-name" onClick={this.handleClickedCity}>{this.props.cityObject.city}</td>
 				<td className="city-rank">{this.props.cityObject.yearRank}</td>
+				<td><button onClick={this.getDirections}>Get Directions</button></td>
+				<td><button onClick={this.zoomToCity}> Zoom </button></td>
 			</tr>
 		)
 	}
 });
-
-
-
 
 var Cities = React.createClass({
 	getInitialState: function() {
@@ -77,6 +131,10 @@ var Cities = React.createClass({
 				currCities: filteredCitiesArray
 		}) 
 		// console.log(filteredCitiesArray);
+	},
+
+	setStartingLocation: function(event){
+		start = event.target.value
 
 	},
 
@@ -104,6 +162,9 @@ var Cities = React.createClass({
 				<form onSubmit={this.updateMarkers} >
 					<input type="text" onChange={this.handleInputChange}/>
 					<input type="submit" value="Update Markers" />
+				</form>
+				<form>
+					<input type="text" placeholder="please enter starting location" onChange={this.setStartinglocation} />
 				</form>
 				<table>
 					<thead>

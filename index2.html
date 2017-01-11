@@ -5,7 +5,7 @@
 	<style> 
 	#map{
 		height:  100vh;
-		width:  65%;
+		width:  50%;
 		float: left;
 		border-right: 3px solid black;
 	}
@@ -20,6 +20,7 @@
 		width: 150px;
 		width:  150px;
 		height: 25px;
+		clear: both;
 	}
 	table{
 		float: right;
@@ -48,6 +49,9 @@
 	<div id="border">
 		<div id="header">39 Largest US Cities</div>
 	    <div id="map"></div>
+<!-- 	    <div id="direction-component">
+	    	Click Two Cities to Get Directions
+	    </div> -->
 	    <div id="cities-container"></div>
     </div>
 
@@ -57,7 +61,7 @@
 	<script src="https://fb.me/react-dom-15.1.0.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
 
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl1YwZ0hzIMNacFKUQ9v4VQ9ZWpAE0Uu0"
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl1YwZ0hzIMNacFKUQ9v4VQ9ZWpAE0Uu0&libraries=places"
     ></script>
 
 	<script type="text/javascript" src="cities.js"></script>
