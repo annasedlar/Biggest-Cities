@@ -58,7 +58,19 @@ function createMarker(city){
 	markers.push(marker); 
 };
 
-
+function createPoI(place){
+	console.log(place);
+	var infoWindow = new google.maps.InfoWindow({});
+	var marker = new google.maps.Marker({
+		map: map,
+		position: place.geometry.location,
+		icon: place.icon
+	})
+	google.maps.event.addListener(marker, 'click', () =>{
+		infoWindow.setContent(place.name);
+		infoWindow.open(map, marker);
+	})
+};
 
 
 
@@ -95,6 +107,12 @@ var GoogleCity = React.createClass({
 		}, 
 		function(results, status){
 			console.log(results);
+			if(status == 'OK'){
+				//good response
+				results.map(function(currPlace, index){
+					createPoI(currPlace);
+				})
+			}
 		}
 		);
 	},
